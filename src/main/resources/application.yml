@@ -12,7 +12,6 @@ spring:
       password: zhr..1314
 mybatis-plus:
   configuration:
-    table-name-handler: '_table'
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -20,5 +19,3 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
       table-prefix: tb_
-reggie:
-  path: D:\java_work\reggie_take_out\src\main\java\com\itheima\reggie\img\
