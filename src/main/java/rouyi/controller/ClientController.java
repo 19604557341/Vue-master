@@ -150,4 +150,23 @@ public class ClientController {
 
         return R.success("修改成功");
     }
+
+    /**
+     * 客户注销账号
+     * @param request
+     * @param phone
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(HttpServletRequest request, String phone) {
+        log.info("客户手机号：{}", phone);
+
+        LambdaQueryWrapper<Client> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Client::getPhone, phone);
+        Client client = clientService.getOne(queryWrapper);
+
+        clientService.removeById(client.getClientId());
+
+        return R.success("删除成功");
+    }
 }
