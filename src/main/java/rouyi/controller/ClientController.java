@@ -118,6 +118,7 @@ public class ClientController {
         }
 
         client.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        client.setStatus(1);
         client.setIntegral(0);
         clientService.save(client);
 
@@ -134,10 +135,17 @@ public class ClientController {
     public R<String> update(HttpServletRequest request, Client client) {
         log.info(client.toString());
 
-        Client client1 = clientService.getById(client.getClientId());
+        LambdaQueryWrapper<Client> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Client::getClientId, client.getClientId());
+        Client client1 = clientService.getOne(queryWrapper);
         client.setIntegral(client.getIntegral() + client1.getIntegral());
+        if (client.getPassword() != null) {
+            client.setPassword(DigestUtils.md5DigestAsHex(client.getPassword().getBytes()));
+            BeanUtils.copyProperties(client1, client, "status");
+        }else {
+            BeanUtils.copyProperties(client1, client);
+        }
 
-        client.setPassword(DigestUtils.md5DigestAsHex(client.getPassword().getBytes()));
         clientService.updateById(client);
 
         return R.success("修改成功");
